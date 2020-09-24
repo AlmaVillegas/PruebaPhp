@@ -27,16 +27,39 @@ class menuController
 			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
 			{
 				$menu = new Menu();
- 				$menu->__SET('id', $r->id);
+ 				$menu->__SET('Id', $r->id);
 				$menu->__SET('Nombre', $r->nombre);
 				$menu->__SET('Descripcion', $r->descripcion);
-				$menu->__SET('dependencia', $r->dependencia);	
+				$menu->__SET('Dependencia', $r->dependencia);	
 				$result[] = $menu;
 			}
 
 			return $result;
 		}
 		catch(Exception $e)
+		{
+			die($e->getMessage());
+		}
+	}
+		public function dependencias()
+	{
+		try 
+		{
+			$result = array();
+
+			$stm = $this->pdo->prepare("SELECT DISTINCT nombre FROM menu");
+			$stm->execute();
+
+			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
+			{
+				$menu = new Menu();
+				$menu->__SET('Nombre', $r->nombre);
+				$result[] = $menu;
+			}
+
+			return $result;
+		} 
+		catch (Exception $e) 
 		{
 			die($e->getMessage());
 		}
@@ -49,32 +72,12 @@ class menuController
 			$stm->execute(array($id));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
 			$menu = new Menu();
- 			$menu->__SET('id', $r->id);
+			$menu->__SET('Id', $r->id);
 			$menu->__SET('Nombre', $r->nombre);
 			$menu->__SET('Descripcion', $r->descripcion);
-			$menu->__SET('dependencia', $r->dependencia);	
+			$menu->__SET('Dependencia', $r->dependencia);	
 			return $menu;
 		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function Buscar($id)
-	{
-		try 
-		{
-			$stm = $this->pdo->prepare("SELECT * FROM menu WHERE id = ?");
-			$stm->execute(array($id));
-			$r = $stm->fetch(PDO::FETCH_OBJ);
-		    $menu = new Menu();
-			$menu->__SET('id', $r->id);
-			$menu->__SET('Nombre', $r->nombre);
-			$menu->__SET('Descripcion', $r->descripcion);
-			$menu->__SET('dependencia', $r->dependencia);	
-			return $menu;
-		} 
-		catch (Exception $e) 
 		{
 			die($e->getMessage());
 		}

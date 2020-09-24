@@ -1,10 +1,10 @@
 <?php
-class  Menu
+class Menu
 {
-	private id;
-	private nombre;
-	private descripcion;
-	private dependencia;
+	private $id;
+	private $Nombre;
+	private $Descripcion;
+	private $Dependencia;
 
 	public function __GET($k)
 	{
