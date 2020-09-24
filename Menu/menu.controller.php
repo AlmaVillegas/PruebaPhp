@@ -47,13 +47,42 @@ class menuController
 		{
 			$result = array();
 
-			$stm = $this->pdo->prepare("SELECT DISTINCT nombre FROM menu");
+			$stm = $this->pdo->prepare("SELECT DISTINCT id, nombre, descripcion, dependencia FROM menu");
 			$stm->execute();
 
 			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
 			{
 				$menu = new Menu();
+				$menu->__SET('Id', $r->id);
 				$menu->__SET('Nombre', $r->nombre);
+				$menu->__SET('Descripcion', $r->descripcion);
+				$menu->__SET('Dependencia', $r->dependencia);
+				$result[] = $menu;
+			}
+
+			return $result;
+		} 
+		catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+		public function ObtenerDependencia($id)
+	{
+		try 
+		{
+			$result = array();
+
+			$stm = $this->pdo->prepare("SELECT * FROM menu WHERE id= ?");
+			$stm->execute(array($id));
+
+			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
+			{
+				$menu = new Menu();
+				$menu->__SET('Id', $r->id);
+				$menu->__SET('Nombre', $r->nombre);
+				$menu->__SET('Descripcion', $r->descripcion);
+				$menu->__SET('Dependencia', $r->dependencia);
 				$result[] = $menu;
 			}
 

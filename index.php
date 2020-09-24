@@ -47,6 +47,12 @@ if(isset($_REQUEST['action']))
             $menu->__SET('Descripcion', $_REQUEST[' ']);
             $menu->__SET('Dependencia', $_REQUEST[' ']);
             break;
+
+      case 'dependencia':
+            $controller->ObtenerDependencia($_REQUEST['id']);
+            header('Location: menu.php');
+       break;
+
   }
 }
 
@@ -118,16 +124,20 @@ function limpia() {
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="index.php">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="index.php">Menus
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
+          <?php foreach($controller->dependencias() as $r): ?>
+            <li class="nav-item active">
+                <a class="nav-link" href="Menu/menu.php">
+                  <?php echo $r->__GET('Nombre');?>
+                </a>
+                <ul>
+                  <?php foreach($controller->dependencias() as $x): ?>
+                   <li class="nav-item active">
+                     <a class="nav-link" href="Menu/menu.php"><?php echo $x->__GET('Dependencia');?>
+                     </a>
+                   </li>
+                <?php endforeach; ?>
+                </ul>
+          <?php endforeach; ?>
         </ul>
       </div>
     </div>
@@ -209,7 +219,7 @@ $(document).ready(function(){
                       <td><?php echo $r->__GET('Descripcion'); ?></td>
                       <td><?php echo $r->__GET('Dependencia'); ?></td>
                       <td>
-                        <a href="?action=editar&id=<?php echo $r->__GET('Id'); ?>" id="edit">Editar</a>
+                        <a href="?action=editar&id=<?php echo $r->__GET('Id'); ?>" >Editar</a>
                       </td>
                       <td>
                         <a href="?action=eliminar&id=<?php echo $r->__GET('Id'); ?>">Eliminar</a>
